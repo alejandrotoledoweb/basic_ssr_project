@@ -11,25 +11,27 @@ const rules = [
 
 const client = {
   entry: './src/client.tsx',
+  mode: 'development',
   output: {
     path: path.resolve(__dirname, './dist/public'),
     filename: 'bundle.js',
     publicPath: '/',
   },
   module: {
-    rules,
+    rules: rules,
   },
 };
 
 const server = {
-  entry: './src/server.ts',
+  entry: './src/server.tsx',
+  mode: 'development',
   output: {
     path: path.resolve(__dirname, './dist'),
     filename: 'server.js',
     publicPath: '/',
   },
-  modules: {
-    rules,
+  module: {
+    rules: rules,
   },
   target: 'node',
   externals: [nodeExternals()],

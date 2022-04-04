@@ -1,4 +1,4 @@
-export default (body) => `
+export default (body: any) => `
   <!DOCTYPE html>
   <html>
     <head>
