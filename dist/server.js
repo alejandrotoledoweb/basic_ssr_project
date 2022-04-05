@@ -16,7 +16,7 @@
   \*********************/
 /***/ ((__unused_webpack_module, exports, __webpack_require__) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"react/jsx-runtime\");\nvar App = function () { return (0, jsx_runtime_1.jsx)(\"div\", { children: \"Hello React\" }); };\nexports[\"default\"] = App;\n\n\n//# sourceURL=webpack://basic_ssr/./src/app.tsx?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"react/jsx-runtime\");\nvar App = function (_a) {\n    var gists = _a.gists;\n    return ((0, jsx_runtime_1.jsx)(\"ul\", { children: gists.map(function (gist) { return ((0, jsx_runtime_1.jsx)(\"li\", { children: gist.description }, gist.id)); }) }));\n};\nexports[\"default\"] = App;\n\n\n//# sourceURL=webpack://basic_ssr/./src/app.tsx?");
 
 /***/ }),
 
@@ -26,7 +26,7 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar 
   \************************/
 /***/ (function(__unused_webpack_module, exports, __webpack_require__) {
 
-eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"react/jsx-runtime\");\nvar express_1 = __importDefault(__webpack_require__(/*! express */ \"express\"));\nvar server_1 = __webpack_require__(/*! react-dom/server */ \"react-dom/server\");\nvar path_1 = __importDefault(__webpack_require__(/*! path */ \"path\"));\nvar app_1 = __importDefault(__webpack_require__(/*! ./app */ \"./src/app.tsx\"));\nvar template_1 = __importDefault(__webpack_require__(/*! ./template */ \"./src/template.ts\"));\nvar app = (0, express_1.default)();\napp.use(express_1.default.static(path_1.default.resolve(__dirname, './dist/public')));\napp.get('/', function (res) {\n    var body = (0, server_1.renderToString)((0, jsx_runtime_1.jsx)(app_1.default, {}));\n    var html = (0, template_1.default)(body);\n    res.send(html);\n});\napp.listen(3000, function () {\n    console.log('Listening on port 3000');\n});\n\n\n//# sourceURL=webpack://basic_ssr/./src/server.tsx?");
+eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {\n    return (mod && mod.__esModule) ? mod : { \"default\": mod };\n};\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nvar jsx_runtime_1 = __webpack_require__(/*! react/jsx-runtime */ \"react/jsx-runtime\");\nvar express_1 = __importDefault(__webpack_require__(/*! express */ \"express\"));\nvar server_1 = __webpack_require__(/*! react-dom/server */ \"react-dom/server\");\nvar path_1 = __importDefault(__webpack_require__(/*! path */ \"path\"));\nvar app_1 = __importDefault(__webpack_require__(/*! ./app */ \"./src/app.tsx\"));\nvar template_1 = __importDefault(__webpack_require__(/*! ./template */ \"./src/template.ts\"));\nvar isomorphic_fetch_1 = __importDefault(__webpack_require__(/*! isomorphic-fetch */ \"isomorphic-fetch\"));\nvar app = (0, express_1.default)();\napp.use(express_1.default.static(path_1.default.resolve(__dirname, './dist/public')));\napp.get('/', function (res) {\n    (0, isomorphic_fetch_1.default)('https://api.github.com/users/gaearon/gists')\n        .then(function (resp) { return resp.json(); })\n        .then(function (gists) {\n        var body = (0, server_1.renderToString)((0, jsx_runtime_1.jsx)(app_1.default, { gists: gists }));\n        var html = (0, template_1.default)(body, gists);\n        res.send(html);\n    });\n});\napp.listen(3000, function () {\n    console.log('Listening on port 3000');\n});\n\n\n//# sourceURL=webpack://basic_ssr/./src/server.tsx?");
 
 /***/ }),
 
@@ -36,7 +36,7 @@ eval("\nvar __importDefault = (this && this.__importDefault) || function (mod) {
   \*************************/
 /***/ ((__unused_webpack_module, exports) => {
 
-eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports[\"default\"] = (function (body) { return \"\\n  <!DOCTYPE html>\\n  <html>\\n    <head>\\n      <meta charset=\\\"UTF-8\\\">\\n    </head>\\n    <body>\\n      <div id=\\\"root\\\">\".concat(body, \"</div>\\n      <script src=\\\"/bundle.js\\\"></script>\\n    </body>\\n  </html>\"); });\n\n\n//# sourceURL=webpack://basic_ssr/./src/template.ts?");
+eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexports[\"default\"] = (function (body, gists) { return \" \\n<!DOCTYPE html> \\n<html> \\n  <head> \\n    <meta charset=\\\"UTF-8\\\"> \\n  </head> \\n  <body> \\n    <div id=\\\"root\\\">\".concat(body, \"</div> \\n    <script>window.gists = \").concat(JSON.stringify(gists), \"</script> \\n    <script src=\\\"/bundle.js\\\"></script> \\n  </body> \\n</html> \\n\"); });\n\n\n//# sourceURL=webpack://basic_ssr/./src/template.ts?");
 
 /***/ }),
 
@@ -47,6 +47,16 @@ eval("\nObject.defineProperty(exports, \"__esModule\", ({ value: true }));\nexpo
 /***/ ((module) => {
 
 module.exports = require("express");
+
+/***/ }),
+
+/***/ "isomorphic-fetch":
+/*!***********************************!*\
+  !*** external "isomorphic-fetch" ***!
+  \***********************************/
+/***/ ((module) => {
+
+module.exports = require("isomorphic-fetch");
 
 /***/ }),
 

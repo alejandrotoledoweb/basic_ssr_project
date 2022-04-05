@@ -1,3 +1,4 @@
-import { render } from 'react-dom';
+import ReactDOM from 'react-dom';
 import App from './app';
-render(<App />, document.getElementById('root'));
+
+ReactDOM.hydrate(<App gists={window.gists} />, document.getElementById('app'));
